@@ -6,6 +6,8 @@
 $ docker-compose up -d
 ```
 
+**O servidor irá rodar na porta 3001**
+
 Acesso inicial do usuário administrador:
 
 ```json
