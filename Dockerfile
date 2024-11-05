@@ -7,4 +7,6 @@ RUN cp .env.example .env
 RUN npm install -g pnpm
 RUN pnpm install
 
-CMD ["pnpm", "run", "start:dev"]
+RUN pnpm run build
+
+CMD ["pnpm", "run", "start"]

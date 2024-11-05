@@ -31,6 +31,8 @@ export class GetUsersResponseDto {
   hasNextPage: boolean;
   @ApiProperty()
   hasPreviousPage: boolean;
-  @ApiProperty()
+  @ApiProperty({
+    type: [GetUserResponseDto],
+  })
   data: GetUserResponseDto[];
 }
