@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "820b72a8-fff8-460d-9c15-081620b569f5",
+		"name": "KeepSimple",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29006644"
+	},
+	"item": [
+		{
+			"name": "CreateUser",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateCPF() {",
+							"    function randomInt(min, max) {",
+							"        return Math.floor(Math.random() * (max - min + 1)) + min;",
+							"    }",
+							"",
+							"    function calculateDigit(cpf, factor) {",
+							"        let total = 0;",
+							"        for (let i = 0; i < cpf.length; i++) {",
+							"            total += parseInt(cpf[i]) * factor--;",
+							"        }",
+							"        const remainder = total % 11;",
+							"        return remainder < 2 ? 0 : 11 - remainder;",
+							"    }",
+							"",
+							"    const cpf = Array.from({ length: 9 }, () => randomInt(0, 9)).join('');",
+							"",
+							"    const firstDigit = calculateDigit(cpf, 10);",
+							"    const secondDigit = calculateDigit(cpf + firstDigit, 11);",
+							"",
+							"    return `${cpf}${firstDigit}${secondDigit}`;",
+							"}",
+							"",
+							"function randomDatePast() {",
+							"    const yearsAgo = 30;",
+							"    const now = new Date();",
+							"    const pastDate = new Date(now.setFullYear(now.getFullYear() - yearsAgo));",
+							"    const randomPastDate = new Date(",
+							"        pastDate.getTime() + Math.random() * (Date.now() - pastDate.getTime())",
+							"    );",
+							"    const formattedDate = randomPastDate.toISOString().split('T')[0];",
+							"    return formattedDate;",
+							"}",
+							"",
+							"const cpf = generateCPF();",
+							"pm.environment.set(\"cpf\", cpf);",
+							"",
+							"const birthDate = randomDatePast();",
+							"pm.environment.set('birthDate', birthDate);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"taxId\": \"{{cpf}}\",\n  \"name\": \"{{$randomFullName}}\",\n  \"birthDate\": \"{{birthDate}}\",\n  \"password\": \"{{cpf}}\",\n  \"street\": \"{{$randomStreetName}}\",\n  \"number\": \"{{$randomInt}}\",\n  \"complement\": \"{{$randomCompanyName}}\",\n  \"neighborhood\": \"{{$randomProductName}}\",\n  \"city\": \"{{$randomCity}}\",\n  \"zipCode\": \"71015-001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"TOKEN\", data.token);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taxId\": \"61033267023\",\n    \"password\": \"61033267023\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users?page=1&limit=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users/22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"22"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Logs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users/3/logs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"3",
+						"logs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/users/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Novo Nome\",\n  \"birthDate\": \"1991-01-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/users/22",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"users",
+						"22"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
