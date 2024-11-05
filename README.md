@@ -1,10 +1,10 @@
-## Instalação
+## Getting Started
+
+### Instalação
 
 ```bash
 $ docker-compose up -d
 ```
-
-## Getting Started
 
 Acesso inicial do usuário administrador:
 
