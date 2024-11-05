@@ -52,6 +52,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         return HttpStatus.UNAUTHORIZED;
       case SERVER_EXCEPTION_CODE.BAD_REQUEST:
         return HttpStatus.BAD_REQUEST;
+      case SERVER_EXCEPTION_CODE.CONFLICT:
+        return HttpStatus.CONFLICT;
       default:
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }

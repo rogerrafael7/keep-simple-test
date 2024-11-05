@@ -25,6 +25,20 @@ export class UserRepo implements UserRepositoryDomain {
     payload: Partial<UserModel>,
     createdBy: number,
   ): Promise<UserModel> {
+    const saved = await this.repo.findOne({
+      where: {
+        taxId: payload.taxId,
+      },
+      select: ['id'],
+    });
+
+    if (saved) {
+      throw new ServerException(
+        'User already exists',
+        SERVER_EXCEPTION_CODE.CONFLICT,
+      );
+    }
+
     const user = await this.repo.save(this.repo.create(payload));
     this.#createLog(user.id, {
       createdBy,

@@ -8,6 +8,10 @@ $ docker-compose up -d
 
 **O servidor irá rodar na porta 3001**
 
+- Collection do Postman com todos os endpoints:
+[Link para a coleção Postman](https://github.com/rogerrafael7/keep-simple-test/tree/master/docs/KeepSimple.postman_collection.json)
+- API Swagger: [API Local Swagger](http://localhost:3001/api-docs)
+
 Acesso inicial do usuário administrador:
 
 ```json
@@ -17,11 +21,22 @@ Acesso inicial do usuário administrador:
 }
 ```
 
-- Collection do Postman com todos os endpoints:
-[Link para a coleção Postman](https://github.com/rogerrafael7/keep-simple-test/tree/master/docs/KeepSimple.postman_collection.json)
-- API Swagger: [API Local Swagger](http://localhost:3001/api-docs)
+### Para rodar os testes:
 
+> A aplicação está usando a versão **node 20.18.0**
 
+Para gerar o arquivo .env, execute o comando abaixo:
+```bash
+$ cp .env.example .env
+```
+> após comando acima, mude a env para **MYSQL_DATABASE_HOST=0.0.0.0** no arquivo **.env**
+
+Agora rode os comandos abaixo para preparar o ambiente e para rodar os testes:
+```bash
+$ npm i -g pnpm
+$ pnpm i
+$ pnpm run test
+```
 
 ## Estrutura do projeto
 

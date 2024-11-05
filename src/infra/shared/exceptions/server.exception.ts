@@ -3,6 +3,7 @@ export enum SERVER_EXCEPTION_CODE {
   NOT_FOUND = 'NOT_FOUND',
   UNAUTHORIZED = 'UNAUTHORIZED',
   BAD_REQUEST = 'BAD_REQUEST',
+  CONFLICT = 'CONFLICT',
 }
 
 export class ServerException extends Error {

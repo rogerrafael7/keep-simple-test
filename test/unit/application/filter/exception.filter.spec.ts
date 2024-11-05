@@ -50,6 +50,14 @@ describe('ExceptionFilter', () => {
       expectedStatus: 401,
       expectedMessage: 'Custom Unauthorized',
     },
+    {
+      error: new ServerException(
+        'TaxId already exists',
+        SERVER_EXCEPTION_CODE.CONFLICT,
+      ),
+      expectedStatus: 409,
+      expectedMessage: 'TaxId already exists',
+    },
   ])(
     'should return correctly response when catch an error',
     ({ error, expectedStatus, expectedMessage }) => {
